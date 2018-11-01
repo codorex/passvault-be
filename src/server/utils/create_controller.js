@@ -4,6 +4,6 @@ let path = require('path');
 module.exports = (controllerUri) => {
     const controllerPath = path.resolve('src/server/modules', `${controllerUri}\\index.js`);
     const Controller = require(controllerPath);
-    console.log(controllerPath)
+    
     return Controller();
 }

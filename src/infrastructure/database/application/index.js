@@ -1,5 +1,6 @@
 const APPS = [
     { 
+        id: '7dc71ff2-68f6-46d0-8c26-5c34c06433c3',
         name: 'Facebook', 
         accounts: [{ 
                 username: 'momi', 
@@ -10,19 +11,13 @@ const APPS = [
 ]
 
 module.exports = () => {
-    const create = (appData) => {
+    const create = (entity) => {
         return new Promise((resolve, reject) => {
-            if(!appData || !appData.name){
+            if(!entity || !entity.name){
                 reject('Invalid application model.');
             } else {
-                const application = {
-                    name: appData.name,
-                    accounts: appData.accounts || [{username: '', passwords: []}]
-                };
-
-                APPS.push(application);
-
-                resolve(application);
+                APPS.push(entity);
+                resolve(entity);
             }
         })
     }

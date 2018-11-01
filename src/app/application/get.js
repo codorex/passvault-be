@@ -9,6 +9,8 @@ module.exports = ({applicationRepository}) => {
         });
     }
 
+    // implement single get
+
     return {
         getSome
     }

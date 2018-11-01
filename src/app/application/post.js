@@ -7,8 +7,7 @@ module.exports = ({applicationRepository}) => {
                 reject({success: false, message: 'Could not create application. Invalid data'});
             } else {
                 try {
-                    // const application = new Application(body.name, body.accounts);
-                    const application = {name: body.name}
+                    const application = {name: body.name};
                     applicationRepository.create(application)
                         .then(data => resolve({success: true, message: 'Created application.', data: data}))
                         .catch(err => reject(err));

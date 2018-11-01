@@ -1,11 +1,13 @@
-module.exports = class Application{
-    constructor(name, accounts){
-        this.id = 
-        this.name = name;
-        this._accounts = accounts || []
-    }
+const t = require('tcomb');
+const { cleanData } = require('../helper.js');
+const { compose } = require('ramda');
 
-    getAccounts(){
-        return this._accounts;
-    }
-}
+const Application = t.struct({
+    id: t.String,
+    name: t.String,
+    accounts: t.maybe(t.Array)
+});
+
+const entity = compose(cleanData, Application);
+
+module.exports = entity;
