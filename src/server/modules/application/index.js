@@ -5,10 +5,11 @@ const applicationRepository = require('../../../infrastructure/repositories/appl
 const {post, get} = require('../../../app/application/index.js');
 
 const database = require('../../../infrastructure/database/application/index.js');
+const { Store } = require('../../../infrastructure/database/data_store.js');
 
 module.exports = () => {
     const router = Router();
-    const applicationModel = database();
+    const applicationModel = database({ Store });
     const applicationUseCase = applicationRepository(applicationModel);
     
     const getUseCase = get({applicationRepository: applicationUseCase});
@@ -20,13 +21,24 @@ module.exports = () => {
 
         getUseCase
             .getSome({skip, take})
-            .then(result => res.status(Status.OK).json(result))
+            .then(result => { 
+                res.status(Status.OK).json(result);
+            })
             .catch(err => res.status(Status.BAD_REQUEST).json(err));
     });
 
+    router.get('/:id', (req, res) => {
+        let id = req.params.id;
+
+        getUseCase
+            .getOne({id})
+            .then(result => res.status(Status.OK).json(result))
+            .catch(err => res.status(Status.BAD_REQUEST).json(err));
+    })
+
     router.post('/', (req, res) => {
         postUseCase
-            .create({body: req.body})
+            .create({ body: req.body })
             .then(result => res.status(Status.OK).json(result))
             .catch(err => {
                 const response = {

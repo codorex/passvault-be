@@ -1,5 +1,3 @@
-const {Application} = require('../../domain/application/index.js');
-
 module.exports = ({applicationRepository}) => {
     const getSome = ({skip, take}) => {
         return new Promise((resolve, reject) => {
@@ -9,10 +7,17 @@ module.exports = ({applicationRepository}) => {
         });
     }
 
-    // implement single get
+    const getOne = ({id}) => {
+        return new Promise((resolve, reject) => {
+            applicationRepository.findOne(id)
+                .then( app => resolve(app))
+                .catch( err => reject(err));
+        })
+    }
 
     return {
-        getSome
+        getSome,
+        getOne
     }
 }
 

@@ -15,21 +15,37 @@ module.exports = (model) => {
 
     const findSome = (skip, take) => {
         return new Promise((resolve, reject) => {
-            model.findSome(skip, take)
-                .then( entities => {
-                    entities.map( rawEntity => {
+            model.findSome( skip || 0, take || 5)
+                .then( async (entities) => {
+                    const mapAsync = entities.map( async rawEntity => {
                         const entity = toEntity(rawEntity);
+
+                        entity.accounts = await model.findApplicationAccounts(entity.id);
+
                         return entity;
                     });
 
-                    resolve(entities);
+                    Promise.all(mapAsync).then(results => resolve(results));
                 })
                 .catch(err => reject(err));
         });
     }
 
+    const findOne = (id) => {
+        return new Promise((resolve, reject) => {
+            model.findOne(id)  
+            .then( async (app) => {
+                const entity = toEntity(app);
+                entity.accounts = await model.findApplicationAccounts(entity.id);
+                resolve(entity);
+            })
+            .catch( err => reject(err));
+        })
+    }
+
     return {
         create,
-        findSome
+        findSome,
+        findOne
     }
 }

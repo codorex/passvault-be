@@ -1,14 +1,11 @@
-const USERS = [
-    { username: 'momi', password: 'password' }
-]
-
-module.exports = () => {
+module.exports = ({Store}) => {
     const create = (userData) => {
         return new Promise((resolve, reject) => {
+            // TODO: Create User Domain model and Entity
             const {username, password} = userData;
-    
+
             try {
-                USERS.push({username, password}); 
+                Store.Users.push({username: username, password: password}); 
             } catch (error) {
                 reject('Corrupt data');
                 return;
@@ -20,7 +17,7 @@ module.exports = () => {
 
     const findOne = (userData) => {
         return new Promise((resolve, reject) => {
-            let user = USERS.find((u) => {
+            let user = Store.Users.find((u) => {
                 return u.username === userData.username &&
                        u.password === userData.password;
             });

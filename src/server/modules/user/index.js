@@ -4,10 +4,11 @@ const userRepository = require('../../../infrastructure/repositories/user/index.
 const { get, post} = require('../../../app/user/index.js');
 
 const database = require('../../../infrastructure/database/user/index.js');
+const { Store } = require('../../../infrastructure/database/data_store.js');
 
 module.exports = () => {
     const router = Router();
-    const userModel = database();
+    const userModel = database({ Store });
     const userUseCase = userRepository(userModel);
 
     const getUseCase = get({userRepository: userUseCase});

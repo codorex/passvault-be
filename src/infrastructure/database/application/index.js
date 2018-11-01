@@ -1,22 +1,10 @@
-const APPS = [
-    { 
-        id: '7dc71ff2-68f6-46d0-8c26-5c34c06433c3',
-        name: 'Facebook', 
-        accounts: [{ 
-                username: 'momi', 
-                passwords: ['test123']
-            }
-        ]
-    }
-]
-
-module.exports = () => {
+module.exports = ({Store}) => {
     const create = (entity) => {
         return new Promise((resolve, reject) => {
             if(!entity || !entity.name){
                 reject('Invalid application model.');
             } else {
-                APPS.push(entity);
+                Store.Applications.push(entity);
                 resolve(entity);
             }
         })
@@ -26,11 +14,13 @@ module.exports = () => {
         return new Promise((resolve, reject) => {
             const applications = [];
 
-            if(APPS.length - skip <= take){
-                resolve(APPS);
+            if(Store.Applications.length - skip <= take){
+                resolve(Store.Applications);
             } else {
-                while(take && APPS.length - skip >= take){
-                    applications.push(APPS[(skip + take) - 1]);
+                while(take && Store.Applications.length - skip >= take){
+                    const application = Store.Applications[(skip + take) - 1];
+
+                    applications.push(application);
                     take--;
                 }
 
@@ -39,8 +29,34 @@ module.exports = () => {
         })
     }
 
+    const findOne = (id) => {
+        return new Promise((resolve, reject) => {
+            try {
+                const application = Store.Applications.find(app => {
+                    return app.id === id;
+                });
+
+                resolve(application);
+            } catch (error) {
+                reject(error);
+            }
+        })
+    }
+
+    const findApplicationAccounts = (id) => {
+        return new Promise((resolve, reject) => {
+            const accounts = Store.Accounts.find( acc => {
+                return acc.applicationId === id;
+            });
+
+            resolve(accounts);
+        })
+    }
+
     return {
         create,
-        findSome
+        findSome,
+        findOne,
+        findApplicationAccounts
     }
 }
