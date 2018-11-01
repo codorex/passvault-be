@@ -1,4 +1,3 @@
-const bodyParser = require('body-parser');
 const controller = require('./utils/create_controller.js');
 const { appSettings } = require('./appSettings.js');
 
@@ -13,9 +12,6 @@ module.exports = () => {
         `/api/${version}/authenticate`,
         /^\/static/
     ]
-
-    router.use(bodyParser.urlencoded({ extended: false }))
-    router.use(bodyParser.json());
 
     //register routes
     apiRouter.use('/authenticate', controller('user'));

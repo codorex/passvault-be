@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const {router, public_routes} = require('./router.js')();
 const auth = require('./middleware/auth.js');
@@ -11,8 +12,11 @@ module.exports = () => {
     const app = express();
 
     app.use(cors);
-    app.use(router);
+
+    app.use(bodyParser.json());
+
     app.use(auth({excluded: public_routes}).authenticator);
+    app.use(router);
 
     app.use('/static', express.static(path.join(__dirname, 'src/static')));
 
