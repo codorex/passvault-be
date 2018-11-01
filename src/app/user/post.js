@@ -15,7 +15,7 @@ module.exports = ({userRepository}) => {
                             role: 'basic'
                         };
                         let token = jwt.sign( payload, secret, {
-                            expiresIn: 10
+                            expiresIn: '24h'
                         });
                         
                         resolve({success: true, message: 'Authentication Successful!', token: token});

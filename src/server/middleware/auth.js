@@ -28,10 +28,14 @@ module.exports = ({excluded}) => {
 
     const isRouteGuarded = (uri) => {
         const match = excluded.find( route => {
-            let regex = new RegExp(uri);
-            return regex.test(route);
+            if(route.useRegex){
+                let regex = new RegExp(route.uri);
+                return regex.test(uri);
+            } else {
+                return route.uri === uri;
+            }
         });
-
+        
         return match === undefined;
     }
 

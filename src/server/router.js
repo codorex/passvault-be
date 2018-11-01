@@ -9,8 +9,8 @@ module.exports = () => {
     const version = appSettings.version;
 
     const public_routes = [
-        `/api/${version}/authenticate`,
-        /^\/static/
+        { uri: `/api/${version}/authenticate`, useRegex: false },
+        { uri: /^\/api\/(.*?)\/static\/(.*)/, useRegex: true }
     ]
 
     //register routes
